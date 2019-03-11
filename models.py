@@ -5,7 +5,7 @@ from userModel import AuthenticationModel
 class ProjectModel(db.Model):
     __tablename__ = 'projects'
     id = db.Column(db.Integer,primary_key=True)
-    title = db.Column(db.String(120),nullable=False,unique=True)
+    title = db.Column(db.String(120),nullable=False,unique=False)
     description = db.Column(db.String(),nullable=True)
     startDate = db.Column(db.String(50),nullable=False)
     endDate = db.Column(db.String(50),nullable=False)
