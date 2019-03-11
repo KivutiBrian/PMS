@@ -97,6 +97,7 @@
       <th scope="col">Start Date</th>
       <th scope="col">End Date</th>
       <th scope="col">Cost</th>
+      <th scope="col">by</th>
       <th scope="col">Status</th>
       <th scope="col">Edit</th>
       <th scope="col">Delete</th>
@@ -111,6 +112,7 @@
       <td>{{ project.startDate }}</td>
       <td>{{ project.endDate }}</td>
       <td>{{ project.cost }}</td>
+      <td>{{ project.user_id }}</td>
       <td>{{ project.status }}</td>
       <td><!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#record{{ project.id }}">

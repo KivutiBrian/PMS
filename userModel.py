@@ -48,6 +48,10 @@ class AuthenticationModel(db.Model):
         else:
             return False
 
+    @classmethod
+    def fetch_user_id(cls,email):
+        return cls.query.filter_by(email=email).first().id
+
 
         # if record and bcrypt.check_password_hash(password,password):
         #     return  True

@@ -42,7 +42,8 @@ def home():
     if session:
         print(session['email'])
         #if session is set
-        records = ProjectModel.fetch_all()
+        print (session['uid'])
+        records = ProjectModel.fetch_all(session['uid'])
         status = [x.status for x in records]
         print(status)
         pie_chart = pygal.Pie()
@@ -81,6 +82,7 @@ def addUser():
 
         # create session
         session['email'] =  email
+        session['uid'] = AuthenticationModel.fetch_user_id(email)
 
         flash("SUCCESS")
         return redirect(url_for('home'))
@@ -96,6 +98,7 @@ def loginIn():
         if AuthenticationModel.userpass(email=email,password=password):
             # create session
             session['email'] = email
+            session['uid'] = AuthenticationModel.fetch_user_id(email)
             return redirect(url_for('home'))
         else:
             flash("password incorrect")
@@ -103,9 +106,6 @@ def loginIn():
     else:
         flash("email is uknown")
         return render_template('authentication.html')
-
-
-
 
 
 @app.route('/project/create',methods=['POST'])
@@ -118,7 +118,7 @@ def addNewProject():
         cost = request.form['cost']
         status = request.form['status']
         project = ProjectModel(title=title,description=description,startDate=startDate,
-                                      endDate=endDate,cost=cost,status=status)
+                                      endDate=endDate,cost=cost,user_id=session['uid'],status=status)
 
         project.create_record()
 

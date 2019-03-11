@@ -1,4 +1,6 @@
 from main import db
+from sqlalchemy.orm import relationship
+from userModel import AuthenticationModel
 
 class ProjectModel(db.Model):
     __tablename__ = 'projects'
@@ -9,6 +11,9 @@ class ProjectModel(db.Model):
     endDate = db.Column(db.String(50),nullable=False)
     cost = db.Column(db.Integer,nullable=False)
     status = db.Column(db.String(30))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("AuthenticationModel")
+
 
 
     # CREATE
@@ -20,8 +25,8 @@ class ProjectModel(db.Model):
     # READ
 
     @classmethod
-    def fetch_all(cls):
-        records = ProjectModel.query.all()
+    def fetch_all(cls,id):
+        records = ProjectModel.query.filter_by(user_id = id ).all()
         return records
 
     #UPDATE
