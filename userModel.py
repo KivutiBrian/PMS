@@ -8,6 +8,7 @@ class AuthenticationModel(db.Model):
     password = db.Column(db.String(),nullable=True)
     email = db.Column(db.String(50),nullable=False,unique=True)
 
+
     # CREATE
     def createUser(self):
         db.session.add(self)
@@ -37,11 +38,6 @@ class AuthenticationModel(db.Model):
     def userpass(cls,email,password):
         print(password)
         record = AuthenticationModel.query.filter_by(email=email).first()
-
-
-        print(record.password)
-        print(record.id)
-        print(record.email)
 
         if record and bcrypt.check_password_hash(record.password,password):
             return True

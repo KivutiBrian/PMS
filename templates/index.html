@@ -2,31 +2,57 @@
 <html lang="en">
 <head>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body{
+            font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+            font-weight: normal;
+            font-size: 0.9em;
+            background: #fafafa ;
+            padding:0 24px;
+
+        }
+        .chart{
+            width: 80%;
+            margin: auto;
+            text-align: center;
+        }
+
+        .navbar{
+            margin-bottom: 36px;
+        }
+    </style>
 </head>
 <body>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-      <p>{{ message }}</p>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Add new Project
-</button>
 
-<form action="/logout" method="post">
-
-    <button type="submit" class="btn btn-primary" > Log out</button>
+    <nav class="navbar navbar-light bg-dark">
+      <form class="form-inline" >
+        <button class="btn btn-outline-warning" type="button" data-toggle="modal" data-target="#exampleModal">Add project</button>
+      </form>
+      <form action="/logout" method="post">
+        <button type="submit" class="btn btn-outline-warning" > Log out</button>
+      </form>
+    </nav>
 
 
-</form>
-
+    <div class="form-group">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        <span>{{ message }}</span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -89,7 +115,7 @@
 
 
 <table class="table">
-  <thead>
+  <thead class="bg-secondary">
     <tr>
       <th scope="col">id</th>
       <th scope="col">Title</th>
@@ -176,17 +202,22 @@
     </div>
   </div>
 </div></td>
-    <td><form action="/project/delete/{{ project.id }}" method="POST">
+    <td>
+        <form action="/project/delete/{{ project.id }}" method="POST">
         <button type="submit" class="btn btn-danger">Delete</button>
-    </form> </td>
+        </form>
+    </td>
     </tr>
   {% endfor %}
-
-
   </tbody>
 </table>
+    <hr><hr>
+    <div class="chart">
+        <h2>Incomplete vs Complete projects</h2>
+        <img src="{{ graph|safe }}" height="400px" type="image/svg"/>
+    </div>
 
-<img src="{{ graph|safe }}" height="400px" type="image/svg"/>
+
 
 
 

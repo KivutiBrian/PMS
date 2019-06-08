@@ -66,17 +66,18 @@ def addUser():
 
     # check if password and confirm password match
     if password != confirmpass:
-        flash("Passwords dont match")
+        flash("Passwords dont match",'danger')
         return render_template('authentication.html')
     elif(AuthenticationModel.checkEmailExist(email)):
         # check if email already exist
-        flash("User already exist")
+        flash("User already exist",'danger')
         return render_template('authentication.html')
     else:
-        # hassing the password
+        # hashing the password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         # create User
+
         register = AuthenticationModel(fullName=fullName,email=email,password=hashed_password)
         register.createUser()
 
@@ -101,10 +102,10 @@ def loginIn():
             session['uid'] = AuthenticationModel.fetch_user_id(email)
             return redirect(url_for('home'))
         else:
-            flash("password incorrect")
+            flash("password incorrect",'danger')
             return render_template('authentication.html')
     else:
-        flash("email is uknown")
+        flash("User does not exist",'danger')
         return render_template('authentication.html')
 
 
@@ -122,7 +123,7 @@ def addNewProject():
 
         project.create_record()
 
-        flash("SUCCESS")
+        flash("Project successfully added",'success')
         return redirect(url_for('home'))
 
 @app.route('/project/edit/<int:id>',methods=['POST'])
@@ -138,20 +139,20 @@ def editProject(id):
                                         newCost=newCost,newStatus=newStatus)
 
     if updated:
-        flash("Updated Successfully")
+        flash("Updated Successfully",'success')
         return redirect(url_for('home'))
     else:
-        flash("No record found")
+        flash("No record found",'danger')
         return redirect(url_for('home'))
 
 @app.route('/project/delete/<int:id>',methods=['POST'])
 def deleteRecord(id):
     deleted = ProjectModel.delete_by_id(id)
     if deleted:
-        flash("Deleted Succesfully")
+        flash("Deleted Succesfully",'success')
         return redirect(url_for('home'))
     else:
-        flash("Record not found")
+        flash("Record not found",'danger')
         return redirect(url_for('home'))
 
 

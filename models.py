@@ -14,23 +14,19 @@ class ProjectModel(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship("AuthenticationModel")
 
-
-
     # CREATE
     def create_record(self):
         db.session.add(self)
         db.session.commit()
 
-
     # READ
-
     @classmethod
     def fetch_all(cls,id):
         records = ProjectModel.query.filter_by(user_id = id ).all()
         return records
 
-    #UPDATE
 
+    #UPDATE
     @classmethod
     def update_by_id(cls,id,newTitle,newDescription,newStartDate,newEndDate,newCost,newStatus):
         record = ProjectModel.query.filter_by(id=id).first()
